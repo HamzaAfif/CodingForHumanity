@@ -1,0 +1,64 @@
+.hero-section {
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  }
+
+
+  #actualites {
+    padding: 3rem 0;
+    background-color: #f7f9fc;
+  }
+  
+  #actualites h2 {
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    color: #003366;
+  }
+  
+  .card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: 12px;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-title {
+    color: #003366;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  
+  .card-text {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .card-footer {
+    background: #eef3fa;
+    border-top: 1px solid #ddd;
+  }
+  
+  .btn-outline-primary {
+    color: #0056b3;
+    border: 1px solid #0056b3;
+    font-size: 0.875rem;
+    font-weight: bold;
+    padding: 0.4rem 1rem;
+  }
+  
+  .btn-outline-primary:hover {
+    color: #fff;
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .text-muted {
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+  
+  

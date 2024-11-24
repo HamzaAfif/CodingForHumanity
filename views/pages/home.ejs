@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Homepage</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- AOS for animations -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <!-- Swiper.js for sliders -->
+  <link href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Double Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <!-- Top Row -->
+          <div class="d-flex justify-content-between w-100 py-1">
+            <div>
+              <a href="#" class="me-3 text-decoration-none text-dark"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
+              <a href="#" class="text-decoration-none text-dark"><i class="fas fa-envelope"></i> contact@association.com</a>
+            </div>
+            
+            <div>
+              <a href="#" class="me-2 text-decoration-none text-dark"><i class="fab fa-facebook"></i></a>
+              <a href="#" class="me-2 text-decoration-none text-dark"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-decoration-none text-dark"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      
+  
+  <!-- Bottom Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">Our Association</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <% if (banners.length > 1) { %>
+      <!-- Carousel for Multiple Banners -->
+      <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner">
+          <% banners.forEach((banner, index) => { %>
+            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+              <img src="<%= banner.image_path %>" class="d-block w-100" alt="Banner">
+            </div>
+          <% }); %>
+        </div>
+        <a class="carousel-control-prev" href="#bannerCarousel" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#bannerCarousel" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
+      </div>
+    <% } else if (banners.length === 1) { %>
+      <!-- Single Banner -->
+      <img src="<%= banners[0].image_path %>" class="d-block w-100" alt="Banner">
+    <% } else { %>
+      <header class="hero-section text-white text-center" style="background: url('https://via.placeholder.com/1920x1080') center/cover; height: 100vh;">
+    <% } %>
+  </header>
+  
+  
+
+  
+
+<section id="actualites" class="py-5" style="background-color: #f7f9fc;">
+  <div class="container">
+    <h2 class="text-center mb-5" style="font-weight: bold; font-size: 2.5rem; color: #003366;">Actualités</h2>
+
+    <% if (news && news.length > 0) { %>
+      <div class="row g-4">
+        <% news.forEach(article => { %>
+          <div class="col-md-4">
+            <div class="card h-100">
+              <!-- Article Image or Icon -->
+              <% if (article.images && article.images.length > 0) { %>
+                <div id="carousel<%= article.ID %>" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner">
+                    <% article.images.forEach((image, index) => { %>
+                      <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                        <img src="<%= image %>" class="d-block w-100" alt="News Image">
+                      </div>
+                    <% }); %>
+                  </div>
+                  <a class="carousel-control-prev" href="#carousel<%= article.ID %>" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  </a>
+                  <a class="carousel-control-next" href="#carousel<%= article.ID %>" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  </a>
+                </div>
+              <% } else { %>
+                <img src="/default-placeholder.png" class="card-img-top" alt="No Image Available">
+              <% } %>
+
+              <!-- Article Content -->
+              <div class="card-body">
+                <h5 class="card-title"><%= article.title %></h5>
+                <p class="card-text"><%= article.description.length > 120 ? article.description.substring(0, 120) + '...' : article.description %></p>
+                <a href="/news/<%= article.ID %>" class="btn btn-primary btn-sm">En savoir plus</a>
+              </div>
+
+              <!-- Footer: Tags -->
+              <% if (article.tags) { %>
+                <div class="card-footer bg-light">
+                  <small class="text-muted">
+                    <% article.tags.split(',').forEach(tag => { %>
+                      #<%= tag.trim() %>
+                    <% }); %>
+                  </small>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p class="text-center text-muted">Aucune actualité disponible pour le moment.</p>
+    <% } %>
+  </div>
+</section>
+
+  
+
+<section id="team" class="py-5" style="background-color: #f7f9fc;">
+  <div class="container">
+    <h2 class="text-center mb-5" style="font-weight: bold; font-size: 2.5rem; color: #003366;">Meet Our Team</h2>
+
+    <% if (team && team.length > 0) { %>
+      <div class="row g-4">
+        <% team.forEach(member => { %>
+          <div class="col-md-4 col-lg-3">
+            <div class="card border-0 shadow-sm text-center h-100">
+              <img 
+                src="<%= member.image_path || '/default-placeholder.png' %>" 
+                class="card-img-top rounded-circle mx-auto mt-4" 
+                alt="<%= member.name %>" 
+                style="width: 150px; height: 150px; object-fit: cover;"
+              >
+              <div class="card-body">
+                <h5 class="card-title text-primary"><%= member.name %></h5>
+                <p class="card-text text-muted"><%= member.role %></p>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p class="text-center text-muted">No team members available at the moment.</p>
+    <% } %>
+  </div>
+</section>
+
+  
+
+  <footer class="bg-dark text-white text-center py-3">
+    <p>&copy; 2024 Our Association. All Rights Reserved.</p>
+  </footer>
+  
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init(); // Initialize AOS
+  </script>
+</body>
+</html>

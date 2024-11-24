@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .banner-preview, .actualites-card img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .tabs {
+      margin-top: 20px;
+    }
+
+    .nav-tabs .nav-link.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary, .btn-danger {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Admin Dashboard</a>
+      <a href="/logout" class="btn btn-outline-light">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container mt-5">
+    <h1 class="text-center">Welcome, <%= username %>!</h1>
+
+    <!-- Tabs for Sections -->
+    <ul class="nav nav-tabs tabs" id="adminTabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="banners-tab" data-bs-toggle="tab" href="#banners" role="tab">Banners</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="actualites-tab" data-bs-toggle="tab" href="#actualites" role="tab">Actualités</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="team-management-tab" data-bs-toggle="tab" href="#team-management" role="tab">team-management</a>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="adminTabContent">
+      <!-- Banners Section -->
+      <div class="tab-pane fade show active" id="banners" role="tabpanel">
+        <section id="banners-section" class="py-4">
+          <h2 class="section-title">Manage Banners</h2>
+
+          <!-- Add Banner Form -->
+          <form method="POST" action="/manageAsspa/add-banner" enctype="multipart/form-data" class="mb-4">
+            <div class="mb-3">
+              <label for="banner" class="form-label">Upload Banner</label>
+              <input type="file" name="banner" id="banner" class="form-control" accept="image/*" required>
+              <small class="text-muted">Recommended dimensions: 1080x360. High-quality images preferred.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Banner</button>
+          </form>
+
+          <!-- Display Existing Banners -->
+          <% if (banners.length > 0) { %>
+            <div class="row">
+              <% banners.forEach(banner => { %>
+                <div class="col-md-4 mb-3">
+                  <div class="card">
+                    <img src="<%= banner.image_path %>" class="card-img-top banner-preview" alt="Banner">
+                    <div class="card-body text-center">
+                      <form method="POST" action="/manageAsspa/delete-banner">
+                        <input type="hidden" name="id" value="<%= banner.id %>">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p class="text-center text-muted">No banners uploaded yet.</p>
+          <% } %>
+        </section>
+      </div>
+
+      <!-- Actualités Section -->
+      <div class="tab-pane fade" id="actualites" role="tabpanel">
+        <section id="actualites-section" class="py-4">
+          <h2 class="section-title text-center mb-4" style="font-weight: bold; color: #003366;">Gérer Actualités</h2>
+      
+          <!-- Add News Form -->
+          <form method="POST" action="/news/add-news" enctype="multipart/form-data" class="mb-5 shadow-sm p-4 bg-white rounded">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" name="date" id="date" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label for="title" class="form-label">Titre</label>
+                <input type="text" name="title" id="title" class="form-control" placeholder="Ex: Journée Internationale" required>
+              </div>
+              <div class="col-md-12">
+                <label for="description" class="form-label">Description (Brief)</label>
+                <textarea name="description" id="description" class="form-control" rows="2" placeholder="Brief description for the card" required></textarea>
+              </div>
+              <div class="col-md-12">
+                <label for="full_text" class="form-label">Full Description</label>
+                <textarea name="full_text" id="full_text" class="form-control" rows="5" placeholder="Detailed description for the full article" required></textarea>
+              </div>
+              <div class="col-md-6">
+                <label for="tags" class="form-label">Tags (separated by commas)</label>
+                <input type="text" name="tags" id="tags" class="form-control" placeholder="Ex: #Événement, #Divers">
+              </div>
+              <div class="mb-3">
+                <label for="images" class="form-label">Upload Images</label>
+                <input type="file" name="images" id="images" class="form-control" accept="image/*" multiple>
+                <small class="text-muted">You can upload multiple images.</small>
+              </div>              
+            </div>
+            <button type="submit" class="btn btn-primary mt-4 w-100">Ajouter Actualité</button>
+          </form>
+          
+      
+          <!-- Display Existing Actualités -->
+          <% if (news.length > 0) { %>
+            <div class="row g-4">
+              <% news.forEach(article => { %>
+                <div class="col-md-6 col-lg-4">
+                  <div class="card shadow-sm h-100">
+                    <!-- Image or Placeholder -->
+                    <% if (article.images && article.images.length > 0) { %>
+                        <div id="carousel<%= article.ID %>" class="carousel slide" data-bs-ride="carousel">
+                          <div class="carousel-inner">
+                            <% article.images.forEach((image, index) => { %>
+                              <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                <img src="<%= image.image_path %>" class="d-block w-100" alt="News Image">
+                              </div>
+                            <% }); %>
+                          </div>
+                          <a class="carousel-control-prev" href="#carousel<%= article.ID %>" role="button" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          </a>
+                          <a class="carousel-control-next" href="#carousel<%= article.ID %>" role="button" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          </a>
+                        </div>
+                    <% } else { %>
+                      <div class="d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                        <i class="fas fa-newspaper fa-4x text-muted"></i>
+                      </div>
+                    <% } %>
+                    <div class="card-body">
+                      <h6 class="card-subtitle text-muted mb-2"><%= article.date %></h6>
+                      <h5 class="card-title text-primary"><%= article.title %></h5>
+                      <p class="card-text text-muted" style="font-size: 0.9rem;"><%= article.description %></p>
+                      <% if (article.tags) { %>
+                        <p>
+                          <% article.tags.split(',').forEach(tag => { %>
+                            <span class="badge bg-secondary">#<%= tag.trim() %></span>
+                          <% }); %>
+                        </p>
+                      <% } %>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                      <!-- Delete Button -->
+                      <form method="POST" action="/news/delete-news">
+                        <input type="hidden" name="id" value="<%= article.ID %>">
+                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                      </form>
+                      <!-- Edit Button -->
+                      <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= article.ID %>">Modifier</button>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="modal fade" id="updateModal<%= article.ID %>" tabindex="-1" aria-labelledby="updateModalLabel<%= article.ID %>" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="updateModalLabel<%= article.ID %>">Modifier Actualité</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="POST" action="/news/update-news" enctype="multipart/form-data">
+                          <!-- Hidden Field for Article ID -->
+                          <input type="hidden" name="id" value="<%= article.ID %>">
+                  
+                          <div class="modal-body">
+                            <!-- Existing Images -->
+                            <% if (article.images && article.images.length > 0) { %>
+                                <div class="mb-3">
+                                    <label>Existing Images</label>
+                                    <div class="d-flex flex-wrap">
+                                      <% article.images.forEach(image => { %>
+                                        <div class="position-relative me-2 mb-2" style="width: 100px; height: 100px;">
+                                          <img src="<%= image.image_path %>" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                                          <div class="form-check position-absolute top-0 end-0">
+                                            <input
+                                              class="form-check-input"
+                                              type="checkbox"
+                                              name="delete_images[]"
+                                              value="<%= image.id %>"
+                                              id="deleteImage<%= image.id %>"
+                                            />
+                                            <label class="form-check-label" for="deleteImage<%= image.id %>">&times;</label>
+                                          </div>
+                                        </div>
+                                      <% }); %>
+                                    </div>
+                                  </div>
+                            <% } %>
+                  
+                            <!-- Upload New Images -->
+                            <div class="mb-3">
+                              <label for="new_images<%= article.ID %>" class="form-label">Upload New Images</label>
+                              <input type="file" name="images" id="new_images<%= article.ID %>" class="form-control" accept="image/*" multiple>
+                            </div>
+                  
+                            <!-- Article Fields -->
+                            <div class="mb-3">
+                              <label for="date<%= article.ID %>" class="form-label">Date</label>
+                              <input type="date" name="date" id="date<%= article.ID %>" class="form-control" value="<%= article.date %>" required>
+                            </div>
+                            <div class="mb-3">
+                              <label for="title<%= article.ID %>" class="form-label">Titre</label>
+                              <input type="text" name="title" id="title<%= article.ID %>" class="form-control" value="<%= article.title %>" required>
+                            </div>
+                            <div class="mb-3">
+                              <label for="description<%= article.ID %>" class="form-label">Description (Brief)</label>
+                              <textarea name="description" id="description<%= article.ID %>" class="form-control" rows="2" required><%= article.description %></textarea>
+                            </div>
+                            <div class="mb-3">
+                              <label for="full_text<%= article.ID %>" class="form-label">Full Description</label>
+                              <textarea name="full_text" id="full_text<%= article.ID %>" class="form-control" rows="5" required><%= article.full_text %></textarea>
+                            </div>
+                            <div class="mb-3">
+                              <label for="tags<%= article.ID %>" class="form-label">Tags</label>
+                              <input type="text" name="tags" id="tags<%= article.ID %>" class="form-control" value="<%= article.tags %>">
+                            </div>
+                          </div>
+                  
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p class="text-center text-muted">Aucune actualité disponible pour le moment.</p>
+          <% } %>
+        </section>
+      </div>
+      
+      <div class="tab-pane fade" id="team-management" role="tabpanel">
+        <section id="team-section" class="py-4">
+          <h2 class="section-title text-center mb-4" style="font-weight: bold; color: #003366;">Manage Team</h2>
+      
+          <!-- Add Team Member Form -->
+          <form method="POST" action="/team/add-member" enctype="multipart/form-data" class="mb-5 shadow-sm p-4 bg-white rounded">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="Member's Name" required>
+              </div>
+              <div class="col-md-6">
+                <label for="role" class="form-label">Role</label>
+                <input type="text" name="role" id="role" class="form-control" placeholder="Ex: Project Manager, Developer" required>
+              </div>
+              <div class="mb-3">
+                <label for="image" class="form-label">Upload Picture</label>
+                <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4 w-100">Add Member</button>
+          </form>
+      
+          <!-- Display Existing Team Members -->
+          <% if (team && team.length > 0) { %>
+            <div class="row g-4">
+              <% team.forEach(member => { %>
+                <div class="col-md-4 col-lg-3">
+                  <div class="card h-100 text-center shadow-sm">
+                    <% if (member.image_path) { %>
+                      <img src="<%= member.image_path %>" class="card-img-top rounded-circle mx-auto mt-3" style="width: 150px; height: 150px; object-fit: cover;" alt="<%= member.name %>">
+                    <% } else { %>
+                      <div class="d-flex align-items-center justify-content-center bg-light rounded-circle mx-auto mt-3" style="width: 150px; height: 150px;">
+                        <i class="fas fa-user-circle fa-7x text-muted"></i>
+                      </div>
+                    <% } %>
+                    <div class="card-body">
+                      <h5 class="card-title"><%= member.name %></h5>
+                      <p class="card-text text-muted"><%= member.role %></p>
+                      <form method="POST" action="/team/delete-member" class="d-inline">
+                        <input type="hidden" name="id" value="<%= member.ID %>">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                      </form>
+                      <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= member.ID %>">Edit</button>
+                    </div>
+                  </div>
+                </div>
+      
+                <!-- Update Modal -->
+                <div class="modal fade" id="updateModal<%= member.ID %>" tabindex="-1" aria-labelledby="updateModalLabel<%= member.ID %>" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel<%= member.ID %>">Edit Member</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form method="POST" action="/team/update-member" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<%= member.ID %>">
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="name<%= member.ID %>" class="form-label">Name</label>
+                            <input type="text" name="name" id="name<%= member.ID %>" class="form-control" value="<%= member.name %>" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="role<%= member.ID %>" class="form-label">Role</label>
+                            <input type="text" name="role" id="role<%= member.ID %>" class="form-control" value="<%= member.role %>" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="image<%= member.ID %>" class="form-label">Update Picture</label>
+                            <input type="file" name="image" id="image<%= member.ID %>" class="form-control" accept="image/*">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p class="text-center text-muted">No team members available.</p>
+          <% } %>
+        </section>
+      </div>
+      
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
