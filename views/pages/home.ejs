@@ -47,6 +47,7 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">نموذج الانتساب</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
       </div>
@@ -81,8 +82,31 @@
     <% } %>
   </header>
   
-  
 
+  <section id="know-us" class="py-5" style="background-color: #ffffff;">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Know Us Image -->
+        <div class="col-md-6 mb-4 mb-md-0">
+          <% if (knowUs.image_path) { %>
+            <img src="<%= knowUs.image_path %>" class="img-fluid rounded shadow" alt="Know Us Image">
+          <% } else { %>
+            <p>Pas photo.</p>
+          <% } %>
+        </div>
+        <!-- Know Us Content -->
+        <div class="col-md-6">
+          <h2 class="mb-4" style="font-weight: bold; font-size: 2.5rem; color: #003366;">تعرف على المجموعة</h2>
+          <p class="mb-3 text-muted" style="font-size: 1.1rem; line-height: 1.8;"><%= knowUs.content %></p>
+          <% if (knowUs.tagline) { %>
+            <p class="text-primary" style="font-size: 1.2rem; font-weight: bold;"><%= knowUs.tagline %></p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
   
 
 <section id="actualites" class="py-5" style="background-color: #f7f9fc;">
@@ -142,7 +166,7 @@
   </div>
 </section>
 
-  
+
 
 <section id="team" class="py-5" style="background-color: #f7f9fc;">
   <div class="container">

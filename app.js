@@ -30,6 +30,8 @@ app.use('/news', newsRoutes);
 const teamRoutes = require('./routes/team');
 app.use('/team', teamRoutes);
 
+const knowUsRoutes = require('./routes/knowUs');
+app.use('/know-us', knowUsRoutes);
 
 app.get('/', (req, res) => {
   db.all('SELECT * FROM banners', (err, banners) => {
@@ -50,36 +52,42 @@ app.get('/', (req, res) => {
           return res.status(500).send('Error loading images.');
         }
 
-        // Map images to their respective news articles
         const imagesByNews = images.reduce((acc, img) => {
           acc[img.news_id] = acc[img.news_id] || [];
           acc[img.news_id].push(img.image_path);
           return acc;
         }, {});
 
-        // Add images array to each news article
         news.forEach((article) => {
           article.images = imagesByNews[article.ID] || [];
         });
 
-        // Fetch team data
         db.all('SELECT * FROM team', (err, team) => {
           if (err) {
             console.error(err.message);
             return res.status(500).send('Error loading team.');
           }
 
-          res.render('pages/home', {
-            banners: banners || [],
-            news: news || [],
-            team: team || [], // Add team data to the template
+          db.get('SELECT * FROM know_us LIMIT 1', (err, knowUs) => {
+            if (err) {
+              console.error(err.message);
+              return res.status(500).send('Error loading Know Us content.');
+            }
+
+            res.render('pages/home', {
+              banners: banners || [],
+              news: news || [],
+              team: team || [],
+              knowUs: knowUs || { content: '', tagline: '', image_path: '' },
+            });
+
+            console.log('Know Us:', knowUs);
           });
         });
       });
     });
   });
 });
-
 
 
 
@@ -139,59 +147,52 @@ app.get('/logout', (req, res) => {
 });
 
 
-
 app.get('/manageAsspa', (req, res) => {
   if (req.session.userId) {
-    // Fetch banners
     db.all('SELECT * FROM banners', (err, banners) => {
       if (err) {
         console.error(err.message);
         return res.status(500).send('Error loading banners.');
       }
 
-      // Fetch articles with their images
-      db.all('SELECT * FROM news', (err, articles) => {
+      db.all('SELECT * FROM news', (err, news) => {
         if (err) {
           console.error(err.message);
           return res.status(500).send('Error loading news.');
         }
 
-        const articlePromises = articles.map(article => {
+        const articlePromises = news.map((article) => {
           return new Promise((resolve, reject) => {
-            db.all(
-              'SELECT image_path, id FROM news_images WHERE news_id = ?',
-              [article.ID],
-              (err, images) => {
-                if (err) {
-                  console.error(`Error fetching images for news ID ${article.ID}:`, err.message);
-                  return reject(err);
-                }
-                article.images = images || [];
-                resolve(article);
-              }
-            );
+            db.all('SELECT image_path, id FROM news_images WHERE news_id = ?', [article.ID], (err, images) => {
+              if (err) reject(err);
+              article.images = images || [];
+              resolve(article);
+            });
           });
         });
 
-        // Fetch team members
-        Promise.all(articlePromises).then(news => {
+        Promise.all(articlePromises).then((articles) => {
           db.all('SELECT * FROM team', (err, team) => {
             if (err) {
-              console.error('Error fetching team:', err.message);
+              console.error(err.message);
               return res.status(500).send('Error loading team members.');
             }
 
-            // Render admin page with all data
-            res.render('pages/admin', {
-              username: req.session.username,
-              banners: banners || [],
-              news: news || [],
-              team: team || [] // Include team in the admin template
+            db.get('SELECT * FROM know_us LIMIT 1', (err, knowUs) => {
+              if (err) {
+                console.error(err.message);
+                return res.status(500).send('Error loading Know Us content.');
+              }
+
+              res.render('pages/admin', {
+                username: req.session.username,
+                banners: banners || [],
+                news: articles || [],
+                team: team || [],
+                knowUs: knowUs || { content: '', tagline: '', image_path: '' },
+              });
             });
           });
-        }).catch(err => {
-          console.error('Error processing news data:', err.message);
-          res.status(500).send('Error processing news data.');
         });
       });
     });
@@ -199,8 +200,6 @@ app.get('/manageAsspa', (req, res) => {
     res.redirect('/login');
   }
 });
-
-
 
 
 
