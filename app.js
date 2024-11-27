@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
               knowUs: knowUs || { content: '', tagline: '', image_path: '' },
             });
 
-            console.log('Know Us:', knowUs);
+            console.log('dkhl chi wahd');
           });
         });
       });
