@@ -7,12 +7,10 @@ const fs = require('fs');
 
 const db = new sqlite3.Database('./laBD.db');
 
-// Set up Multer for image uploads
 const upload = multer({
   dest: path.join(__dirname, '../public/uploads/team'),
 });
 
-// Add a team member
 router.post('/add-member', upload.single('image'), (req, res) => {
   const { name, role } = req.body;
   const imagePath = `/uploads/team/${req.file.filename}`;
@@ -30,7 +28,6 @@ router.post('/add-member', upload.single('image'), (req, res) => {
   );
 });
 
-// Update a team member
 router.post('/update-member', upload.single('image'), (req, res) => {
   const { id, name, role } = req.body;
   const imagePath = req.file ? `/uploads/team/${req.file.filename}` : null;
@@ -48,7 +45,6 @@ router.post('/update-member', upload.single('image'), (req, res) => {
   );
 });
 
-// Delete a team member
 router.post('/delete-member', (req, res) => {
   const { id } = req.body;
 

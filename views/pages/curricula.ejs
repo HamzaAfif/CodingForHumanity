@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المناهج</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .curriculum-card {
+      margin-bottom: 1.5rem;
+    }
+    .curriculum-logo {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <h2 class="text-center mb-5" style="color: #003366;">المناهج</h2>
+
+    <% if (curricula && curricula.length > 0) { %>
+      <% curricula.forEach(curriculum => { %>
+        <div class="card curriculum-card shadow-sm">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-2 text-center p-2">
+              <% if (curriculum.logo_path) { %>
+                <img src="<%= curriculum.logo_path %>" class="curriculum-logo" alt="Logo">
+              <% } else { %>
+                <div class="bg-light text-muted d-flex align-items-center justify-content-center curriculum-logo">
+                  لا يوجد شعار
+                </div>
+              <% } %>
+            </div>
+            <div class="col-md-10">
+              <div class="card-body">
+                <h5 class="card-title"><%= curriculum.title %></h5>
+                <p class="card-text text-muted"><%= curriculum.description %></p>
+                <span class="badge bg-primary"><%= curriculum.category %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p class="text-center text-muted">لا توجد مناهج لعرضها حاليا.</p>
+    <% } %>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

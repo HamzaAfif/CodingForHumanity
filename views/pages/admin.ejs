@@ -75,10 +75,19 @@
       <li class="nav-item">
         <a class="nav-link" id="know-us-tab" data-bs-toggle="tab" href="#know-us" role="tab">know-us</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" id="registrations-tab" data-bs-toggle="tab" href="#registrations" role="tab">Registrations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="curricula-tab" data-bs-toggle="tab" href="#curricula" role="tab">المناهج</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="curricula-tab" data-bs-toggle="tab" href="#albums" role="tab">albums</a>
+      </li>
     </ul>
 
     <div class="tab-content" id="adminTabContent">
-      <!-- Banners Section -->
+
       <div class="tab-pane fade show active" id="banners" role="tabpanel">
         <section id="banners-section" class="py-4">
           <h2 class="section-title">Manage Banners</h2>
@@ -116,7 +125,6 @@
         </section>
       </div>
 
-      <!-- Actualités Section -->
       <div class="tab-pane fade" id="actualites" role="tabpanel">
         <section id="actualites-section" class="py-4">
           <h2 class="section-title text-center mb-4" style="font-weight: bold; color: #003366;">Gérer Actualités</h2>
@@ -400,6 +408,187 @@
           </form>
         </section>
       </div>
+      
+      <div class="tab-pane fade" id="registrations" role="tabpanel">
+        <section id="registrations-section" class="py-4">
+          <h2 class="section-title text-center mb-4" style="font-weight: bold; color: #003366;">Registrations</h2>
+          <% if (registrations.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Date of Birth</th>
+                    <th>Message</th>
+                    <th>Submitted At</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% registrations.forEach((registration, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= registration.name %></td>
+                      <td><%= registration.email %></td>
+                      <td><%= registration.phone %></td>
+                      <td><%= registration.address %></td>
+                      <td><%= registration.date_of_birth %></td>
+                      <td><%= registration.message || 'N/A' %></td>
+                      <td><%= registration.created_at %></td>
+                      <td>
+                        <form method="POST" action="/registrations/delete" style="display: inline;">
+                          <input type="hidden" name="id" value="<%= registration.id %>">
+                          <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this registration?');">Delete</button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <p class="text-center text-muted">No registrations available.</p>
+          <% } %>
+        </section>
+      </div>
+
+      <div class="tab-pane fade" id="curricula" role="tabpanel">
+        <section id="curricula-section" class="py-4">
+          <h2 class="section-title text-center mb-4" style="font-weight: bold; color: #003366;">إدارة المناهج</h2>
+      
+          <form method="POST" action="/curricula/add" enctype="multipart/form-data" class="mb-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="title" class="form-label">اسم المنهاج</label>
+                <input type="text" name="title" id="title" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label for="category" class="form-label">الفئة</label>
+                <select name="category" id="category" class="form-control" required>
+                  <option value="الأشبال">الأشبال</option>
+                  <option value="الجوالة">الجوالة</option>
+                  <option value="القادة">القادة</option>
+                </select>
+              </div>
+              <div class="col-md-12">
+                <label for="description" class="form-label">الوصف</label>
+                <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
+              </div>
+              <div class="col-md-12">
+                <label for="logo" class="form-label">تحميل الشعار</label>
+                <input type="file" name="logo" id="logo" class="form-control" accept="image/*">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4 w-100">إضافة المنهاج</button>
+          </form>
+      
+          <!-- Display Curricula -->
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>الاسم</th>
+                  <th>الوصف</th>
+                  <th>الفئة</th>
+                  <th>الشعار</th>
+                  <th>الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% curricula.forEach((curriculum, index) => { %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= curriculum.title %></td>
+                    <td><%= curriculum.description %></td>
+                    <td><%= curriculum.category %></td>
+                    <td>
+                      <% if (curriculum.logo_path) { %>
+                        <img src="<%= curriculum.logo_path %>" alt="Logo" style="width: 50px; height: 50px; object-fit: cover;">
+                      <% } else { %>
+                        <span>لا يوجد شعار</span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <form method="POST" action="/curricula/delete" style="display: inline;">
+                        <input type="hidden" name="id" value="<%= curriculum.id %>">
+                        <button class="btn btn-danger btn-sm">حذف</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      
+      <div class="tab-pane fade" id="albums" role="tabpanel">
+        <section class="py-4">
+          <h2 class="text-center mb-4" style="color: #003366;">Manage Albums</h2>
+      
+          <form action="/albums/add" method="POST" enctype="multipart/form-data" class="mb-4">
+            <div class="mb-3">
+              <label for="title" class="form-label">Album Title</label>
+              <input type="text" name="title" id="title" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Album Description</label>
+              <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="images" class="form-label">Upload Images</label>
+              <input type="file" name="images" id="images" class="form-control" accept="image/*" multiple required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Album</button>
+          </form>
+      
+          <h3 class="text-center mt-5">Existing Albums</h3>
+<div class="row">
+  <% if (albums && albums.length > 0) { %>
+    <% albums.forEach(album => { %>
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title"><%= album.title %></h5>
+            <p class="card-text"><%= album.description %></p>
+            <form action="/albums/delete" method="POST" class="d-inline">
+              <input type="hidden" name="id" value="<%= album.id %>">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </div>
+          <% if (album.images && album.images.length > 0) { %>
+            <div id="carousel<%= album.id %>" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <% album.images.forEach((image, index) => { %>
+                  <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                    <img src="<%= image %>" class="d-block w-100" alt="Album Image">
+                  </div>
+                <% }); %>
+              </div>
+              <a class="carousel-control-prev" href="#carousel<%= album.id %>" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              </a>
+              <a class="carousel-control-next" href="#carousel<%= album.id %>" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              </a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <p class="text-center text-muted">No albums available.</p>
+  <% } %>
+</div>
+
+        </section>
+      </div>
+      
       
       
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

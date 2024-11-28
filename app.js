@@ -30,6 +30,11 @@ app.use('/news', newsRoutes);
 const teamRoutes = require('./routes/team');
 app.use('/team', teamRoutes);
 
+const curriculaRoutes = require('./routes/curricula'); 
+
+app.use('/curricula', curriculaRoutes);
+
+
 const knowUsRoutes = require('./routes/knowUs');
 app.use('/know-us', knowUsRoutes);
 
@@ -81,7 +86,7 @@ app.get('/', (req, res) => {
               knowUs: knowUs || { content: '', tagline: '', image_path: '' },
             });
 
-            console.log('Know Us:', knowUs);
+            console.log('dkhl chi wahd');
           });
         });
       });
@@ -149,15 +154,16 @@ app.get('/logout', (req, res) => {
 
 app.get('/manageAsspa', (req, res) => {
   if (req.session.userId) {
+
     db.all('SELECT * FROM banners', (err, banners) => {
       if (err) {
-        console.error(err.message);
+        console.error('Error fetching banners:', err.message);
         return res.status(500).send('Error loading banners.');
       }
 
       db.all('SELECT * FROM news', (err, news) => {
         if (err) {
-          console.error(err.message);
+          console.error('Error fetching news:', err.message);
           return res.status(500).send('Error loading news.');
         }
 
@@ -165,31 +171,78 @@ app.get('/manageAsspa', (req, res) => {
           return new Promise((resolve, reject) => {
             db.all('SELECT image_path, id FROM news_images WHERE news_id = ?', [article.ID], (err, images) => {
               if (err) reject(err);
-              article.images = images || [];
+              article.images = images || []; 
               resolve(article);
             });
           });
         });
 
         Promise.all(articlePromises).then((articles) => {
+
           db.all('SELECT * FROM team', (err, team) => {
             if (err) {
-              console.error(err.message);
+              console.error('Error fetching team:', err.message);
               return res.status(500).send('Error loading team members.');
             }
 
+
             db.get('SELECT * FROM know_us LIMIT 1', (err, knowUs) => {
               if (err) {
-                console.error(err.message);
+                console.error('Error fetching Know Us section:', err.message);
                 return res.status(500).send('Error loading Know Us content.');
               }
 
-              res.render('pages/admin', {
-                username: req.session.username,
-                banners: banners || [],
-                news: articles || [],
-                team: team || [],
-                knowUs: knowUs || { content: '', tagline: '', image_path: '' },
+
+              db.all('SELECT * FROM registrations ORDER BY created_at DESC', (err, registrations) => {
+                if (err) {
+                  console.error('Error fetching registrations:', err.message);
+                  return res.status(500).send('Error loading registrations.');
+                }
+
+       
+                db.all('SELECT * FROM curricula', (err, curricula) => {
+                  if (err) {
+                    console.error('Error fetching curricula:', err.message);
+                    return res.status(500).send('Error loading curricula.');
+                  }
+
+            
+                  db.all('SELECT * FROM albums', (err, albums) => {
+                    if (err) {
+                      console.error('Error fetching albums:', err.message);
+                      return res.status(500).send('Error loading albums.');
+                    }
+
+                    const albumPromises = albums.map((album) => {
+                      return new Promise((resolve, reject) => {
+                        db.all('SELECT image_path FROM album_images WHERE album_id = ?', [album.id], (err, images) => {
+                          if (err) reject(err);
+                          album.images = images.map((img) => img.image_path); // Assign images to the album
+                          resolve(album);
+                        });
+                      });
+                    });
+
+                    Promise.all(albumPromises)
+                      .then((albumsWithImages) => {
+                        // Render the admin page with all collected data
+                        res.render('pages/admin', {
+                          username: req.session.username,
+                          banners: banners || [],
+                          news: articles || [],
+                          team: team || [],
+                          knowUs: knowUs || { content: '', tagline: '', image_path: '' },
+                          registrations: registrations || [],
+                          curricula: curricula || [],
+                          albums: albumsWithImages || [],
+                        });
+                      })
+                      .catch((err) => {
+                        console.error('Error processing albums:', err.message);
+                        res.status(500).send('Error processing albums.');
+                      });
+                  });
+                });
               });
             });
           });
@@ -202,6 +255,198 @@ app.get('/manageAsspa', (req, res) => {
 });
 
 
+app.get('/curricula', (req, res) => {
+  db.all('SELECT * FROM curricula', (err, curricula) => {
+    if (err) {
+      console.error('Error fetching curricula:', err.message);
+      return res.status(500).send('Error loading curricula.');
+    }
+
+    res.render('pages/curricula', {
+      curricula: curricula || [],
+    });
+  });
+});
+
+
+app.get('/registration', (req, res) => {
+  res.render('pages/registration'); 
+});
+
+app.post('/registration', (req, res) => {
+  const { name, email, phone, address, date_of_birth, message } = req.body;
+
+  db.run(
+    'INSERT INTO registrations (name, email, phone, address, date_of_birth, message) VALUES (?, ?, ?, ?, ?, ?)',
+    [name, email, phone, address, date_of_birth, message || null],
+    (err) => {
+      if (err) {
+        console.error('SQL Query:', {
+          query: 'INSERT INTO registrations (name, email, phone, address, date_of_birth, message) VALUES (?, ?, ?, ?, ?, ?)',
+          params: [name, email, phone, address, date_of_birth, message || null],
+        });
+        console.error('Error saving registration:', err.message);
+        return res
+          .status(500)
+          .json({ success: false, message: 'Error saving registration.' });
+      }
+  
+      res.redirect('/');
+    }
+  );      
+});  
+
+app.post('/registrations/delete', (req, res) => {
+  const { id } = req.body;
+
+  db.run('DELETE FROM registrations WHERE id = ?', [id], (err) => {
+    if (err) {
+      console.error('Error deleting registration:', err.message);
+      return res.status(500).send('Error deleting registration.');
+    }
+
+    res.redirect('/manageAsspa'); // Redirect back to the admin panel
+  });
+});
+
+
+
+
+const multer = require('multer');
+const fs = require('fs');
+
+const ensureDirectoryExists = (dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const albumPath = path.join(__dirname, 'public/uploads/albums');
+    ensureDirectoryExists(albumPath); 
+    cb(null, albumPath); 
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueName); 
+  },
+});
+
+const upload = multer({ storage });
+
+
+app.post('/albums/add', upload.array('images', 10), (req, res) => {
+  const { title, description } = req.body;
+
+
+  db.run(
+    'INSERT INTO albums (title, description) VALUES (?, ?)',
+    [title, description],
+    function (err) {
+      if (err) {
+        console.error('Error saving album:', err.message);
+        return res.status(500).send('Error saving album.');
+      }
+
+      const albumId = this.lastID;
+
+
+      const imagePaths = req.files.map(file => `uploads/albums/${file.filename}`);
+      const imageInsertPromises = imagePaths.map(imagePath => {
+        return new Promise((resolve, reject) => {
+          db.run(
+            'INSERT INTO album_images (album_id, image_path) VALUES (?, ?)',
+            [albumId, imagePath],
+            (err) => {
+              if (err) {
+                console.error('Error saving image:', err.message);
+                reject(err);
+              } else {
+                resolve();
+              }
+            }
+          );
+        });
+      });
+
+      Promise.all(imageInsertPromises)
+        .then(() => {
+          res.redirect('/manageAsspa'); // Redirect to admin page after success
+        })
+        .catch(err => {
+          console.error('Error saving album images:', err.message);
+          res.status(500).send('Error saving album images.');
+        });
+    }
+  );
+});
+
+
+app.post('/albums/delete', (req, res) => {
+  const { id } = req.body;
+
+  db.all('SELECT image_path FROM album_images WHERE album_id = ?', [id], (err, images) => {
+    if (err) {
+      console.error('Error fetching album images:', err.message);
+      return res.status(500).send('Error fetching album images.');
+    }
+
+    images.forEach(image => {
+      const filePath = path.join(__dirname, 'public', image.image_path);
+      fs.unlink(filePath, err => {
+        if (err) console.error('Error deleting file:', filePath, err.message);
+      });
+    });
+
+    db.run('DELETE FROM album_images WHERE album_id = ?', [id], (err) => {
+      if (err) {
+        console.error('Error deleting album images:', err.message);
+        return res.status(500).send('Error deleting album images.');
+      }
+
+      db.run('DELETE FROM albums WHERE id = ?', [id], (err) => {
+        if (err) {
+          console.error('Error deleting album:', err.message);
+          return res.status(500).send('Error deleting album.');
+        }
+
+        res.redirect('/manageAsspa');
+      });
+    });
+  });
+});
+
+
+app.get('/albums', (req, res) => {
+  db.all('SELECT * FROM albums', (err, albums) => {
+    if (err) {
+      console.error('Error loading albums:', err.message);
+      return res.status(500).send('Error loading albums.');
+    }
+
+
+    const albumPromises = albums.map((album) => {
+      return new Promise((resolve, reject) => {
+        db.all('SELECT image_path FROM album_images WHERE album_id = ?', [album.id], (err, images) => {
+          if (err) reject(err);
+          album.images = images.map((img) => img.image_path) || [];
+          resolve(album);
+        });
+      });
+    });
+
+
+    Promise.all(albumPromises)
+      .then((albumsWithImages) => {
+        res.render('pages/albums', { albums: albumsWithImages });
+      })
+      .catch((err) => {
+        console.error('Error processing albums:', err.message);
+        res.status(500).send('Error processing albums.');
+      });
+  });
+});
 
 
 app.listen(PORT, () => {
