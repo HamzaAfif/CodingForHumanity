@@ -13,6 +13,10 @@
   <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <!-- Custom CSS -->
+  
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
@@ -23,7 +27,7 @@
           <div class="d-flex justify-content-between w-100 py-1">
             <div>
               <a href="#" class="me-3 text-decoration-none text-dark"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
-              <a href="#" class="text-decoration-none text-dark"><i class="fas fa-envelope"></i> contact@association.com</a>
+              <a href="#" class="text-decoration-none text-dark"><i class="fas fa-envelope"></i> contact@assppa.com</a>
             </div>
             
             <div>
@@ -36,166 +40,338 @@
       </nav>
       
   
-  <!-- Bottom Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="/">Association des Scouts du Petit Ange</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="/albums">البومات</a></li>
-          <li class="nav-item"><a class="nav-link" href="#know-us">عن الجمعية</a></li>
-          <li class="nav-item"><a class="nav-link" href="/curricula">المناهج</a></li>
-          <li class="nav-item"><a class="nav-link" href="/registration">نموذج الانتساب</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  
-
-
-  <header class="hero-section">
-    <% if (banners.length > 1) { %>
-      <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-inner">
-          <% banners.forEach((banner, index) => { %>
-            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-              <img src="<%= banner.image_path %>" class="d-block w-100" alt="Banner">
-            </div>
-          <% }); %>
+      <nav class="bg-dark text-white">
+        <div class="container mx-auto flex items-center justify-between p-4">
+          <a class="text-lg font-bold" href="/">Association des Scouts du Petit Ange</a>
+          <button
+            class="md:hidden text-white focus:outline-none"
+            onclick="document.getElementById('navbarNav').classList.toggle('hidden')"
+          >
+            ☰
+          </button>
+          <div class="hidden md:flex space-x-4" id="navbarNav">
+            <a class="text-white hover:text-blue-300" href="/albums">البومات</a>
+            <a class="text-white hover:text-blue-300" href="#know-us">عن الجمعية</a>
+            <a class="text-white hover:text-blue-300" href="/curricula">المناهج</a>
+            <a class="text-white hover:text-blue-300" href="/registration">نموذج الانتساب</a>
+            <a class="text-white hover:text-blue-300" href="#contact">Contact</a>
+          </div>
         </div>
-        <a class="carousel-control-prev" href="#bannerCarousel" role="button" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </a>
-        <a class="carousel-control-next" href="#bannerCarousel" role="button" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </a>
-      </div>
-    <% } else if (banners.length === 1) { %>
-      <!-- Single Banner -->
-      <img src="<%= banners[0].image_path %>" class="d-block w-100" alt="Banner">
-    <% } else { %>
-      <header class="hero-section text-white text-center" style="background: url('https://via.placeholder.com/1920x1080') center/cover; height: 100vh;">
-    <% } %>
-  </header>
+      </nav>
+      
+  
   
 
-  <section id="know-us" class="py-5" style="background-color: #ffffff;">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6 mb-4 mb-md-0">
+      <header class="relative hero-section">
+        <% if (banners.length > 1) { %>
+          <!-- Carousel for Multiple Banners -->
+          <div id="bannerCarousel" class="relative h-[80vh] overflow-hidden">
+            <% banners.forEach((banner, index) => { %>
+              <div
+                class="absolute inset-0 h-full w-full bg-cover bg-center transition-opacity duration-1000 <%= index === 0 ? 'opacity-100' : 'opacity-0' %>"
+                style="background-image: url('<%= banner.image_path %>');"
+              >
+              <div class="bg-black bg-opacity-50 h-full flex items-center justify-center text-center px-4">
+                <div class="text-white space-y-4">
+                  <h1 class="text-4xl md:text-6xl font-bold">جمعية الملاك الصغير للكشفية</h1>
+                  <p class="text-lg md:text-xl"></p>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+        <% } else if (banners.length === 1) { %>
+ 
+          <div
+            class="relative h-[80vh] bg-cover bg-center"
+            style="background-image: url('<%= banners[0].image_path %>');"
+          >
+            
+            <div class="bg-black bg-opacity-50 h-full flex items-center justify-center text-center px-4">
+              <div class="text-white">
+                <h1 class="text-4xl md:text-6xl font-bold">جمعية الملاك الصغير للكشفية</h1>
+                <p class="text-lg md:text-xl"></p>
+              </div>
+            </div>
+          </div>
+        <% } else { %>
+          
+          <div
+            class="relative h-[80vh] bg-cover bg-center"
+            style="background-image: url('https://via.placeholder.com/1920x1080');"
+          >
+            
+            <div class="bg-black bg-opacity-50 h-full flex items-center justify-center text-center px-4">
+              <div class="text-white">
+                <h1 class="text-4xl md:text-6xl font-bold">جمعية الملاك الصغير للكشفية</h1>
+                <p class="text-lg md:text-xl"></p>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </header>
+      
+      
+  
+
+  <section id="know-us" class="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-bold mb-12 text-blue-900 leading-tight " data-aos="fade-up">
+        تعرف على المجموعة
+      </h2>
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="w-full md:w-1/2 order-1" data-aos="fade-right">
           <% if (knowUs.image_path) { %>
-            <img src="<%= knowUs.image_path %>" class="img-fluid rounded shadow" alt="Know Us Image">
+            <div class="relative">
+              <div class="absolute inset-0 bg-blue-300 rounded-lg transform rotate-3"></div>
+              <img 
+                src="<%= knowUs.image_path %>" 
+                class="relative z-10 w-full h-auto object-cover rounded-lg shadow-xl transition-transform duration-300 hover:scale-105" 
+                alt="Know Us Image"
+              >
+            </div>
           <% } else { %>
-            <p>Pas photo.</p>
+            <div class="bg-blue-200 rounded-lg p-8 text-center">
+              <p class="text-blue-800 text-lg">صورة غير متوفرة</p>
+            </div>
           <% } %>
         </div>
-        <!-- Know Us Content -->
-        <div class="col-md-6">
-          <h2 class="mb-4" style="font-weight: bold; font-size: 2.5rem; color: #003366;">تعرف على المجموعة</h2>
-          <p class="mb-3 text-muted" style="font-size: 1.1rem; line-height: 1.8;"><%= knowUs.content %></p>
+        <div class="w-full md:w-1/2 order-2">
+          <div class="relative">
+            <div class="absolute top-0 left-0 w-12 h-12 bg-blue-200 rounded-full opacity-50" style="z-index: -1;"></div>
+            <p class="text-gray-700 text-lg leading-relaxed mb-6 relative z-10" data-aos="fade-up" data-aos-delay="100">
+              <%= knowUs.content %>
+            </p>
+          </div>
           <% if (knowUs.tagline) { %>
-            <p class="text-primary" style="font-size: 1.2rem; font-weight: bold;"><%= knowUs.tagline %></p>
+            <div class="relative inline-block" data-aos="fade-up" data-aos-delay="200">
+              <div class="absolute inset-0 bg-blue-200 transform -skew-x-12"></div>
+              <p class="relative z-10 text-blue-800 text-xl font-semibold py-2 px-4">
+                <%= knowUs.tagline %>
+              </p>
+            </div>
           <% } %>
         </div>
       </div>
     </div>
   </section>
   
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+  
+    #know-us {
+      font-family: 'Tajawal', sans-serif;
+    }
+  
+    #know-us h2 {
+      position: relative;
+      display: inline-block;
+    }
+  
+    #know-us h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background-color: #3B82F6;
+    }
+  </style>
+  
+  
+  
   
   
 
-<section id="actualites" class="py-5" style="background-color: #f7f9fc;">
-  <div class="container">
-    <h2 class="text-center mb-5" style="font-weight: bold; font-size: 2.5rem; color: #003366;">Actualités</h2>
-
-    <% if (news && news.length > 0) { %>
-      <div class="row g-4">
-        <% news.forEach(article => { %>
-          <div class="col-md-4">
-            <div class="card h-100">
-              <!-- Article Image or Icon -->
-              <% if (article.images && article.images.length > 0) { %>
-                <div id="carousel<%= article.ID %>" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                    <% article.images.forEach((image, index) => { %>
-                      <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                        <img src="<%= image %>" class="d-block w-100" alt="News Image">
+  <section id="actualites" class="py-5 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container">
+      <h2 class="text-center mb-5 position-relative d-inline-block mx-auto w-100" style="font-weight: bold; font-size: 2.5rem; color: #003366;">
+        Actualités
+        <span class="position-absolute bottom-0 start-50 translate-middle-x bg-primary rounded" style="width: 80px; height: 4px;"></span>
+      </h2>
+  
+      <% if (news && news.length > 0) { %>
+        <div class="row g-4">
+          <% news.forEach((article, index) => { %>
+            <div class="col-md-6 col-lg-4">
+              <div class="card h-100 shadow-sm news-card" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                <!-- Article Image or Carousel -->
+                <div class="position-relative">
+                  <% if (article.images && article.images.length > 0) { %>
+                    <div id="carousel<%= article.ID %>" class="carousel slide" data-bs-ride="carousel">
+                      <div class="carousel-inner">
+                        <% article.images.forEach((image, index) => { %>
+                          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                            <img src="<%= image %>" class="d-block w-100 news-image" alt="News Image">
+                          </div>
+                        <% }); %>
                       </div>
+                      <button class="carousel-control-prev" type="button" data-bs-target="#carousel<%= article.ID %>" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#carousel<%= article.ID %>" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                    </div>
+                  <% } else { %>
+                    <img src="/default-placeholder.png" class="card-img-top news-image" alt="No Image Available">
+                  <% } %>
+                  <div class="position-absolute top-0 start-0 m-3 bg-primary text-white px-2 py-1 rounded">
+                    <small><%= new Date(article.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' }) %></small>
+                  </div>
+                </div>
+  
+                <!-- Article Content -->
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title text-primary mb-3"><%= article.title %></h5>
+                  <p class="card-text flex-grow-1"><%= article.description.length > 120 ? article.description.substring(0, 120) + '...' : article.description %></p>
+                  <a href="/news/<%= article.ID %>" class="btn btn-outline-primary mt-3">En savoir plus</a>
+                </div>
+  
+                <!-- Footer: Tags -->
+                <% if (article.tags) { %>
+                  <div class="card-footer bg-transparent border-top-0">
+                    <% article.tags.split(',').forEach(tag => { %>
+                      <span class="badge bg-light text-primary me-1">#<%= tag.trim() %></span>
                     <% }); %>
                   </div>
-                  <a class="carousel-control-prev" href="#carousel<%= article.ID %>" role="button" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  </a>
-                  <a class="carousel-control-next" href="#carousel<%= article.ID %>" role="button" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  </a>
-                </div>
-              <% } else { %>
-                <img src="/default-placeholder.png" class="card-img-top" alt="No Image Available">
-              <% } %>
-
-              <!-- Article Content -->
-              <div class="card-body">
-                <h5 class="card-title"><%= article.title %></h5>
-                <p class="card-text"><%= article.description.length > 120 ? article.description.substring(0, 120) + '...' : article.description %></p>
-                <a href="/news/<%= article.ID %>" class="btn btn-primary btn-sm">En savoir plus</a>
+                <% } %>
               </div>
-
-              <!-- Footer: Tags -->
-              <% if (article.tags) { %>
-                <div class="card-footer bg-light">
-                  <small class="text-muted">
-                    <% article.tags.split(',').forEach(tag => { %>
-                      #<%= tag.trim() %>
-                    <% }); %>
-                  </small>
-                </div>
-              <% } %>
             </div>
-          </div>
-        <% }); %>
-      </div>
-    <% } else { %>
-      <p class="text-center text-muted">Aucune actualité disponible pour le moment.</p>
-    <% } %>
-  </div>
-</section>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <p class="text-center text-muted">Aucune actualité disponible pour le moment.</p>
+      <% } %>
+    </div>
+  </section>
+  
+  <style>
+    .news-card {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+    .news-image {
+      height: 200px;
+      object-fit: cover;
+    }
+    .carousel-control-prev, .carousel-control-next {
+      width: 10%;
+    }
+    .badge {
+      font-size: 0.8rem;
+      font-weight: normal;
+    }
+  </style>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
+    });
+  </script>
 
 
 
-<section id="team" class="py-5" style="background-color: #f7f9fc;">
+<section id="team" class="py-5 bg-gradient-to-br from-blue-100 to-indigo-50">
   <div class="container">
-    <h2 class="text-center mb-5" style="font-weight: bold; font-size: 2.5rem; color: #003366;">Meet Our Team</h2>
+    <h2 class="text-center mb-5 position-relative d-inline-block mx-auto w-100" style="font-weight: bold; font-size: 2.5rem; color: #003366;">
+      تعرف على فريقنا
+      <span class="position-absolute bottom-0 start-50 translate-middle-x bg-primary rounded" style="width: 80px; height: 4px;"></span>
+    </h2>
 
     <% if (team && team.length > 0) { %>
-      <div class="row g-4">
-        <% team.forEach(member => { %>
-          <div class="col-md-4 col-lg-3">
-            <div class="card border-0 shadow-sm text-center h-100">
-              <img 
-                src="<%= member.image_path || '/default-placeholder.png' %>" 
-                class="card-img-top rounded-circle mx-auto mt-4" 
-                alt="<%= member.name %>" 
-                style="width: 150px; height: 150px; object-fit: cover;"
-              >
-              <div class="card-body">
-                <h5 class="card-title text-primary"><%= member.name %></h5>
-                <p class="card-text text-muted"><%= member.role %></p>
+      <div class="row g-4 justify-content-center">
+        <% team.forEach((member, index) => { %>
+          <div class="col-md-6 col-lg-4 col-xl-3">
+            <div class="card border-0 shadow-lg team-card h-100" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+              <div class="position-relative overflow-hidden team-image-wrapper">
+                <img 
+                  src="<%= member.image_path || '/default-placeholder.png' %>" 
+                  class="card-img-top" 
+                  alt="<%= member.name %>" 
+                  style="height: 250px; object-fit: cover;"
+                >
+                <div class="team-overlay d-flex flex-column justify-content-end p-3">
+                  <h5 class="card-title text-white mb-0"><%= member.name %></h5>
+                  <p class="card-text text-white-50"><%= member.role %></p>
+                </div>
+              </div>
+              <div class="card-body text-center">
+                <p class="card-text text-muted"><%= member.bio || 'عضو فعال في فريقنا' %></p>
+                <div class="mt-3">
+                  <a href="#" class="btn btn-outline-primary btn-sm mx-1"><i class="fab fa-linkedin"></i></a>
+                  <a href="#" class="btn btn-outline-primary btn-sm mx-1"><i class="fab fa-twitter"></i></a>
+                  <a href="#" class="btn btn-outline-primary btn-sm mx-1"><i class="fas fa-envelope"></i></a>
+                </div>
               </div>
             </div>
           </div>
         <% }); %>
       </div>
     <% } else { %>
-      <p class="text-center text-muted">No team members available at the moment.</p>
+      <p class="text-center text-muted">لا يوجد أعضاء في الفريق حالياً.</p>
     <% } %>
   </div>
 </section>
 
+<style>
+  .team-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+  }
+  .team-image-wrapper {
+    position: relative;
+  }
+  .team-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .team-card:hover .team-overlay {
+    opacity: 1;
+  }
+  .btn-outline-primary {
+    border-width: 2px;
+    transition: all 0.3s ease-in-out;
+  }
+  .btn-outline-primary:hover {
+    background-color: #003366;
+    border-color: #003366;
+    color: white;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100
+    });
+  });
+</script>
   
 
 <footer class="bg-dark text-white text-center py-4" id="contact">
@@ -233,6 +409,29 @@
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init(); 
+    // Add this to your main JavaScript file or before the closing </body> tag
+document.addEventListener('DOMContentLoaded', function() {
+  AOS.init();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = document.querySelectorAll("#bannerCarousel > div");
+  let currentSlide = 0;
+
+  function showNextSlide() {
+
+    slides[currentSlide].classList.remove("opacity-100");
+    slides[currentSlide].classList.add("opacity-0");
+
+    currentSlide = (currentSlide + 1) % slides.length;
+
+    slides[currentSlide].classList.remove("opacity-0");
+    slides[currentSlide].classList.add("opacity-100");
+  }
+
+  setInterval(showNextSlide, 7000);
+});
+
   </script>
 </body>
 </html>
