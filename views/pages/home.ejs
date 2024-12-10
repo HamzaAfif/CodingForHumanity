@@ -20,45 +20,7 @@
   <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Double Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-          <!-- Top Row -->
-          <div class="d-flex justify-content-between w-100 py-1">
-            <div>
-              <a href="#" class="me-3 text-decoration-none text-dark"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
-              <a href="#" class="text-decoration-none text-dark"><i class="fas fa-envelope"></i> contact@assppa.com</a>
-            </div>
-            
-            <div>
-              <a href="#" class="me-2 text-decoration-none text-dark"><i class="fab fa-facebook"></i></a>
-              <a href="#" class="me-2 text-decoration-none text-dark"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="text-decoration-none text-dark"><i class="fab fa-instagram"></i></a>
-            </div>
-          </div>
-        </div>
-      </nav>
-      
-  
-      <nav class="bg-dark text-white">
-        <div class="container mx-auto flex items-center justify-between p-4">
-          <a class="text-lg font-bold" href="/">Association des Scouts du Petit Ange</a>
-          <button
-            class="md:hidden text-white focus:outline-none"
-            onclick="document.getElementById('navbarNav').classList.toggle('hidden')"
-          >
-            ☰
-          </button>
-          <div class="hidden md:flex space-x-4" id="navbarNav">
-            <a class="text-white hover:text-blue-300" href="/albums">البومات</a>
-            <a class="text-white hover:text-blue-300" href="#know-us">عن الجمعية</a>
-            <a class="text-white hover:text-blue-300" href="/curricula">المناهج</a>
-            <a class="text-white hover:text-blue-300" href="/registration">نموذج الانتساب</a>
-            <a class="text-white hover:text-blue-300" href="#contact">Contact</a>
-          </div>
-        </div>
-      </nav>
-      
+  <%- include('partials/navbar') %>
   
   
 
@@ -73,7 +35,14 @@
               >
               <div class="bg-black bg-opacity-50 h-full flex items-center justify-center text-center px-4">
                 <div class="text-white space-y-4">
-                  <h1 class="text-4xl md:text-6xl font-bold">جمعية الملاك الصغير للكشفية</h1>
+                  <!-- Vertical Logo -->
+                  <div class="flex justify-center mb-6 ">
+                    <img
+                    src="/assets/logowb.png"
+                    alt="Association des Scouts du Petit Ange Vertical Logo"
+                    class="h-auto max-w-full w-48 sm:w-64 md:w-80 lg:w-96 bg-transparent"
+                  >
+                  </div>
                   <p class="text-lg md:text-xl"></p>
                 </div>
               </div>
@@ -87,13 +56,26 @@
             style="background-image: url('<%= banners[0].image_path %>');"
           >
             
-            <div class="bg-black bg-opacity-50 h-full flex items-center justify-center text-center px-4">
-              <div class="text-white">
-                <h1 class="text-4xl md:text-6xl font-bold">جمعية الملاك الصغير للكشفية</h1>
-                <p class="text-lg md:text-xl"></p>
+          <div class="bg-black bg-opacity-50 h-full flex items-center justify-center text-center px-4">
+            <div class="text-white space-y-4">
+              <!-- Vertical Logo -->
+              <div class="flex justify-center mb-6 ">
+                <img
+                src="/assets/logowb.png"
+                alt="Association des Scouts du Petit Ange Vertical Logo"
+                class="h-auto max-w-full w-48 sm:w-64 md:w-80 lg:w-96 bg-transparent"
+              >
               </div>
+              <p class="text-lg md:text-xl"></p>
             </div>
           </div>
+        </div>
+              <p class="text-lg md:text-xl"></p>
+            </div>
+          </div>
+          
+          
+          
         <% } else { %>
           
           <div
@@ -117,7 +99,7 @@
   <section id="know-us" class="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
     <div class="container mx-auto px-4 text-center">
       <h2 class="text-4xl font-bold mb-12 text-blue-900 leading-tight " data-aos="fade-up">
-        تعرف على المجموعة
+        تعرف على الجمعية
       </h2>
       <div class="flex flex-col md:flex-row items-center gap-12">
         <div class="w-full md:w-1/2 order-1" data-aos="fade-right">
@@ -220,8 +202,8 @@
                   <% } else { %>
                     <img src="/default-placeholder.png" class="card-img-top news-image" alt="No Image Available">
                   <% } %>
-                  <div class="position-absolute top-0 start-0 m-3 bg-primary text-white px-2 py-1 rounded">
-                    <small><%= new Date(article.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' }) %></small>
+                  <div class="position-absolute top-0 start-200 m-3 bg-primary text-white px-2 py-1 rounded">
+                    <small><%= new Date(article.date).toLocaleDateString('fr-FR', { month: 'short' }) %> <%= new Date(article.date).getFullYear() %></small>
                   </div>
                 </div>
   
@@ -374,33 +356,7 @@
 </script>
   
 
-<footer class="bg-dark text-white text-center py-4" id="contact">
-  <div class="container">
-    <p class="mb-2">&copy; 2024 Our Association. All Rights Reserved.</p>
-    
-
-    <div class="row">
-      <div class="col-md-4">
-        <p class="mb-1"><strong>Address:</strong></p>
-        <p>123 Main Street, City, Country</p>
-      </div>
-      <div class="col-md-4">
-        <p class="mb-1"><strong>Phone:</strong></p>
-        <p><a href="tel:+1234567890" class="text-white text-decoration-none">+123 456 7890</a></p>
-      </div>
-      <div class="col-md-4">
-        <p class="mb-1"><strong>Email:</strong></p>
-        <p><a href="mailto:info@ourassociation.com" class="text-white text-decoration-none">info@ourassociation.com</a></p>
-      </div>
-    </div>
-
-    <div class="mt-3">
-      <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
-      <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
-      <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
-    </div>
-  </div>
-</footer>
+<%- include('partials/footer') %>
 
   
 

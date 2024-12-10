@@ -22,22 +22,9 @@
     }
   </script>
 </head>
-<body class="bg-secondary font-sans text-gray-800">
-  <div class="min-h-screen flex flex-col">
-    <header class="bg-primary text-white py-4">
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center">
-          <a href="/" class="text-2xl font-bold">جمعية كشافة الملاك الصغير</a>
-          <nav>
-            <ul class="flex space-x-4">
-              <li><a href="/" class="hover:text-gray-300 transition duration-300">الرئيسية</a></li>
-              <li><a href="/register" class="hover:text-gray-300 transition duration-300">نموذج الانتساب</a></li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </header>
 
+<body class="bg-secondary font-sans text-gray-800">
+  <%- include('partials/navbar') %>
     <main class="flex-grow container mx-auto px-4 py-8">
       <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
         <h1 class="text-3xl font-bold text-primary text-center mb-8">نموذج الانتساب</h1>
@@ -73,11 +60,7 @@
       </div>
     </main>
 
-    <footer class="bg-primary text-white py-4 mt-8">
-      <div class="container mx-auto px-4 text-center">
-        <p>&copy; <%= new Date().getFullYear() %> جمعية كشافة الملاك الصغير. جميع الحقوق محفوظة.</p>
-      </div>
-    </footer>
+    <%- include('partials/footer') %>
   </div>
 </body>
 </html>

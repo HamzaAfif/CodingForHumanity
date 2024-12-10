@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المناهج | جمعية الملاك الصغير للكشفية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#003366',  /* This is your main blue */
+            secondary: '#f7f9fc',
+            accent: '#FF5733',  /* Adjust accent to a different color, like a red/orange for visibility */
+            navbarBackground: '#002147', /* Dark blue for navbar background */
+            navbarText: '#fff',  /* White text for navbar */
+          },
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-secondary font-sans">
+  
+  <!-- Top Contact and Social Row -->
+  <header class="bg-gray-100 py-2">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <div class="text-sm text-gray-600">
+        <a href="#" class="ml-4 hover:text-primary"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
+        <a href="#" class="hover:text-primary"><i class="fas fa-envelope"></i> contact@assppa.com</a>
+      </div>
+      <div class="text-sm text-gray-600">
+        <a href="#" class="ml-2 hover:text-primary"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="ml-2 hover:text-primary"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="hover:text-primary"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navbar -->
+  <nav class="bg-navbarBackground text-navbarText">
+    <div class="container mx-auto flex justify-between items-center px-4 py-2">
+      <!-- Logo -->
+      <a href="/" class="text-xl font-bold ml-auto"> 
+        جمعية الملاك الصغير للكشفية 
+      </a>
+      <!-- Navbar Links -->
+      <button class="block md:hidden text-navbarText" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="hidden md:flex space-x-4 rtl:space-x-reverse" id="menu">
+        <li><a href="/albums" class="hover:text-accent">البومات</a></li>
+        <li><a href="/know-us" class="hover:text-accent">عن الجمعية</a></li>
+        <li><a href="/curricula" class="hover:text-accent">المناهج</a></li>
+        <li><a href="/registration" class="hover:text-accent">نموذج الانتساب</a></li>
+        <li><a href="#contact" class="hover:text-accent">اتصل بنا</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <script>
+
+    const menuToggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+
+    menuToggle.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  </script>
+
+</body>
+</html>

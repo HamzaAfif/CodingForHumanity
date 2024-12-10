@@ -95,7 +95,9 @@ app.get('/', (req, res) => {
 });
 
 
-
+app.get('/know-us', (req, res) => {
+  res.render('pages/know-us');
+});
 
 app.get('/register', (req, res) => {
   res.render('pages/register');
@@ -445,6 +447,34 @@ app.get('/albums', (req, res) => {
         console.error('Error processing albums:', err.message);
         res.status(500).send('Error processing albums.');
       });
+  });
+});
+
+app.get('/albums/:id', (req, res) => {
+  const albumId = req.params.id;
+
+ 
+  db.get('SELECT * FROM albums WHERE id = ?', [albumId], (err, album) => {
+    if (err) {
+      console.error('Error fetching album:', err.message);
+      return res.status(500).send('Error fetching album.');
+    }
+
+    if (!album) {
+      return res.status(404).send('Album not found.');
+    }
+
+    db.all('SELECT image_path FROM album_images WHERE album_id = ?', [albumId], (err, images) => {
+      if (err) {
+        console.error('Error fetching album images:', err.message);
+        return res.status(500).send('Error fetching album images.');
+      }
+
+      res.render('pages/album', {
+        album,
+        images: images.map((img) => img.image_path),
+      });
+    });
   });
 });
 

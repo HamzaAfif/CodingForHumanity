@@ -12,102 +12,97 @@
       --primary-color: #003366;
       --secondary-color: #f7f9fc;
       --accent-color: #3B82F6;
+      --text-muted: #555;
+      --shadow-hover: rgba(0, 0, 0, 0.2);
     }
+
     body {
       background-color: var(--secondary-color);
       font-family: 'Tajawal', Arial, sans-serif;
     }
-    .album-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-    .album-description {
-      font-size: 1rem;
-      color: #555;
-    }
-    .carousel-item img {
-      height: 300px;
-      object-fit: cover;
-    }
-    .card {
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-    }
+
+    /* Hero Section */
     .hero-section {
       background: linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 51, 102, 0.7)), url('/path-to-your-hero-image.jpg') center/cover no-repeat;
       color: white;
-      padding: 100px 0;
+      padding: 100px 15px;
       margin-bottom: 50px;
+    }
+    .hero-section h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .hero-section p {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+
+    /* Album Card */
+    .card {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 15px var(--shadow-hover);
+    }
+
+    .album-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .album-description {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* Carousel */
+    .carousel-item img {
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      filter: invert(100%);
+    }
+
+    /* Card Footer */
+    .card-footer {
+      background: var(--secondary-color);
+      border-top: none;
+      padding: 10px;
     }
     .btn-primary {
       background-color: var(--accent-color);
-      border-color: var(--accent-color);
+      border: none;
     }
     .btn-primary:hover {
       background-color: #2563EB;
-      border-color: #2563EB;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+      .hero-section p {
+        font-size: 1rem;
+      }
+      .card-footer {
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <!-- Top Row -->
-      <div class="d-flex justify-content-between w-100 py-1">
-        <div>
-          <a href="#" class="me-3 text-decoration-none text-dark"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
-          <a href="#" class="text-decoration-none text-dark"><i class="fas fa-envelope"></i> contact@assppa.com</a>
-        </div>
-        
-        <div>
-          <a href="#" class="me-2 text-decoration-none text-dark"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="me-2 text-decoration-none text-dark"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-decoration-none text-dark"><i class="fab fa-instagram"></i></a>
-        </div>
-      </div>
-    </div>
-  </nav>
-  
-
-  <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <!-- Navbar Brand -->
-    <a class="navbar-brand" href="/">Association des Scouts du Petit Ange</a>
-    <!-- Toggle Button for Mobile View -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <!-- Navbar Links -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/albums">البومات</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="#know-us">عن الجمعية</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/curricula">المناهج</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/registration">نموذج الانتساب</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="#contact">Contact</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
+  <%- include('partials/navbar') %>
 
   <!-- Hero Section -->
   <section class="hero-section text-center">
@@ -149,7 +144,7 @@
               <% } else { %>
                 <img src="/default-album-image.jpg" class="card-img-top" alt="Default album image">
               <% } %>
-              <div class="card-footer bg-transparent border-top-0 text-end">
+              <div class="card-footer text-end">
                 <a href="/albums/<%= album.id %>" class="btn btn-primary btn-sm">View Album <i class="fas fa-arrow-right ms-2"></i></a>
               </div>
             </div>
@@ -174,5 +169,7 @@
       });
     });
   </script>
+
+  <%- include('partials/footer') %>
 </body>
 </html>
