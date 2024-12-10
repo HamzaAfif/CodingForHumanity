@@ -51,6 +51,8 @@ app.get('/', (req, res) => {
         return res.status(500).send('Error loading news.');
       }
 
+      news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
       db.all('SELECT * FROM news_images', (err, images) => {
         if (err) {
           console.error(err.message);

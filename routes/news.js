@@ -188,21 +188,36 @@ router.post('/change-status', (req, res) => {
 
 
 
-router.get('/:id', (req, res) => {
-const { id } = req.params;
-
-db.get('SELECT * FROM news WHERE ID = ?', [id], (err, article) => {
-    if (err) {
-    console.error(err.message);
-    return res.status(500).send('Error loading article.');
-    }
-    if (!article) {
-    return res.status(404).send('Article not found.');
-    }
-
-    res.render('pages/news-details', { article });
-});
-});
+  router.get('/:id', (req, res) => {
+    const { id } = req.params;
+  
+    // Query to fetch article details
+    const articleQuery = 'SELECT * FROM news WHERE ID = ?';
+    // Query to fetch images for the article
+    const imagesQuery = 'SELECT image_path FROM news_images WHERE news_id = ?';
+  
+    db.get(articleQuery, [id], (err, article) => {
+      if (err) {
+        console.error(err.message);
+        return res.status(500).send('Error loading article.');
+      }
+      if (!article) {
+        return res.status(404).send('Article not found.');
+      }
+  
+      // Fetch images for the article
+      db.all(imagesQuery, [id], (err, images) => {
+        if (err) {
+          console.error(err.message);
+          return res.status(500).send('Error loading images.');
+        }
+  
+        // Pass both the article and its images to the template
+        res.render('pages/news-details', { article, images });
+      });
+    });
+  });
+  
 
   
 module.exports = router;
