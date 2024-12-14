@@ -6,6 +6,7 @@
   <title>المناهج | جمعية كشافة الملاك الصغير</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="assets/icon.ico" type="image/x-icon">
   <script>
     tailwind.config = {
       theme: {
@@ -23,49 +24,125 @@
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  </style>
 </head>
 <body class="bg-secondary font-sans">
   <%- include('partials/navbar') %>
   
-  <!-- Curricula Section -->
-  <main class="container mx-auto px-4 py-8">
+  <header class="bg-primary text-white py-16 px-4">
+    <div class="container mx-auto text-center">
+      <h1 class="text-4xl font-bold mb-4">مناهج الكشافة</h1>
+      <p class="text-xl mb-8">اكتشف مناهجنا المتنوعة لتطوير مهارات الكشافة وبناء شخصيتهم</p>
+    </div>
+  </header>
+
+
+  <main class="container mx-auto px-4 py-12">
+
+    <div class="mb-8 text-center">
+      <button
+        class="filter-btn bg-primary text-white px-4 py-2 rounded-full mr-2 mb-2 hover:bg-accent hover:text-white transition duration-300"
+        data-category="all"
+      >
+        الكل
+      </button>
+      <% const categories = [...new Set(curricula.map(c => c.category))]; %>
+      <% categories.forEach(category => { %>
+        <button
+          class="filter-btn bg-primary text-white px-4 py-2 rounded-full mr-2 mb-2 hover:bg-accent hover:text-white transition duration-300"
+          data-category="<%= category %>"
+        >
+          <%= category %>
+        </button>
+      <% }); %>
+    </div>
+    
+
     <% if (curricula && curricula.length > 0) { %>
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         <% curricula.forEach(curriculum => { %>
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="curriculum-card bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition duration-300 fade-in" data-category="<%= curriculum.category %>">
             <div class="p-6">
               <div class="flex items-center justify-between mb-4">
                 <% if (curriculum.logo_path) { %>
-                  <img src="<%= curriculum.logo_path %>" class="w-12 h-12 object-contain" alt="شعار المنهج">
+                  <img src="<%= curriculum.logo_path %>" class="w-16 h-16 object-contain" alt="شعار المنهج">
                 <% } else { %>
-                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-primary">
-                    <i class="fas fa-book-open text-xl"></i>
+                  <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center text-primary">
+                    <i class="fas fa-book-open text-2xl"></i>
                   </div>
                 <% } %>
-                <span class="bg-primary text-white text-sm px-2 py-1 rounded">
+                <span class="bg-accent text-white text-sm px-3 py-1 rounded-full">
                   <%= curriculum.category %>
                 </span>
               </div>
-              <h2 class="text-xl font-bold text-primary mb-2"><%= curriculum.title %></h2>
+              <h2 class="text-2xl font-bold text-primary mb-3"><%= curriculum.title %></h2>
               <p class="text-gray-600 mb-4"><%= curriculum.description %></p>
+              
             </div>
           </div>
         <% }) %>
       </div>
     <% } else { %>
-      <p class="text-center text-gray-600">لا توجد مناهج حالياً.</p>
+      <p class="text-center text-gray-600 text-xl">لا توجد مناهج حالياً.</p>
     <% } %>
   </main>
+
+  <section class="bg-primary text-white py-16 px-4">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-4">هل أنت مستعد للانضمام إلى مغامرتنا الكشفية؟</h2>
+      <p class="text-xl mb-8">انضم إلينا اليوم واكتشف عالمًا من الفرص والتحديات</p>
+      <a href="/registration" class="bg-white text-primary px-6 py-3 rounded-full text-lg font-bold hover:bg-accent hover:text-white transition duration-300">سجل الآن</a>
+    </div>
+  </section>
   
+  <%- include('partials/footer') %>
+
   <script>
-    // Toggle Menu for Mobile
+
     document.getElementById('menu-toggle').addEventListener('click', function () {
       const menu = document.getElementById('menu');
       menu.classList.toggle('hidden');
     });
-  </script>
+  
 
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const curriculumCards = document.querySelectorAll('.curriculum-card');
+  
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category');
+  
+ 
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-accent', 'text-white');
+          btn.classList.add('bg-primary', 'text-white'); 
+        });
+  
+
+        button.classList.remove('bg-primary');
+        button.classList.add('bg-accent', 'text-white');
+  
+
+        curriculumCards.forEach(card => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = 'block';
+            card.classList.add('fade-in'); 
+          } else {
+            card.style.display = 'none';
+            card.classList.remove('fade-in');
+          }
+        });
+      });
+    });
+  </script>
   
 </body>
-<%- include('partials/footer') %>
 </html>

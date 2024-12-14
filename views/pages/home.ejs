@@ -4,16 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modern Homepage</title>
-  <!-- Bootstrap CSS -->
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- AOS for animations -->
+
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <!-- Swiper.js for sliders -->
+
   <link href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  
+
+  <link rel="icon" href="assets/icon.ico" type="image/x-icon">
+
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -169,10 +170,11 @@
 
   <section id="actualites" class="py-5 bg-gradient-to-br from-blue-50 to-indigo-100">
     <div class="container">
-      <h2 class="text-center mb-5 position-relative d-inline-block mx-auto w-100" style="font-weight: bold; font-size: 2.5rem; color: #003366;">
-        Actualités
+      <h2 class="text-center mb-5 position-relative d-inline-block mx-auto w-100" style="font-weight: bold; font-size: 2.5rem; color: #003366; direction: rtl;">
+        <span class="d-block">أخبار</span>
         <span class="position-absolute bottom-0 start-50 translate-middle-x bg-primary rounded" style="width: 80px; height: 4px;"></span>
-      </h2>
+    </h2>
+    
   
       <% if (news && news.length > 0) { %>
         <div class="row g-4">

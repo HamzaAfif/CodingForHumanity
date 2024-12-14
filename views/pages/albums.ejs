@@ -7,6 +7,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/icon.ico" type="image/x-icon">
   <style>
     :root {
       --primary-color: #003366;
@@ -21,82 +23,167 @@
       font-family: 'Tajawal', Arial, sans-serif;
     }
 
-    /* Hero Section */
     .hero-section {
-      background: linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 51, 102, 0.7)), url('/path-to-your-hero-image.jpg') center/cover no-repeat;
+      background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)), url('/path-to-your-hero-image.jpg') center/cover no-repeat;
       color: white;
-      padding: 100px 15px;
-      margin-bottom: 50px;
-    }
-    .hero-section h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-    }
-    .hero-section p {
-      font-size: 1.2rem;
-      margin-top: 20px;
+      padding: 120px 15px;
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Album Card */
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('/path-to-pattern-overlay.png') repeat;
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    .hero-section .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-section h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-section p {
+      font-size: 1.3rem;
+      max-width: 600px;
+      margin: 0 auto;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
     .card {
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: white;
     }
+
     .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 15px var(--shadow-hover);
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px var(--shadow-hover);
     }
 
     .album-title {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--primary-color);
+      margin-bottom: 10px;
     }
 
     .album-description {
       font-size: 1rem;
       color: var(--text-muted);
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      line-height: 1.6;
     }
 
-    /* Carousel */
     .carousel-item img {
       height: 250px;
       object-fit: cover;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-      filter: invert(100%);
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 10%;
+      opacity: 0.7;
     }
 
-    /* Card Footer */
-    .card-footer {
-      background: var(--secondary-color);
-      border-top: none;
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
       padding: 10px;
     }
+
+    .card-footer {
+      background: white;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 15px;
+    }
+
     .btn-primary {
       background-color: var(--accent-color);
       border: none;
-    }
-    .btn-primary:hover {
-      background-color: #2563EB;
+      padding: 8px 20px;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
 
-    /* Responsive Adjustments */
+    .btn-primary:hover {
+      background-color: #2563EB;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .album-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .album-category {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
     @media (max-width: 768px) {
       .hero-section h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
       .hero-section p {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
       .card-footer {
         text-align: center;
       }
+    }
+
+    .filter-buttons {
+      margin-bottom: 30px;
+    }
+
+    .filter-button {
+      background-color: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+      padding: 8px 20px;
+      margin: 5px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .filter-button:hover,
+    .filter-button.active {
+      background-color: var(--primary-color);
+      color: white;
     }
   </style>
 </head>
@@ -104,23 +191,34 @@
 
   <%- include('partials/navbar') %>
 
-  <!-- Hero Section -->
   <section class="hero-section text-center">
     <div class="container">
-      <h1 class="display-4 mb-4" data-aos="fade-up">Our Albums</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="100">Explore our memories and adventures through these captivating photo collections.</p>
+      <h1 class="display-4 mb-4" data-aos="fade-up">ألبوماتنا</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="100">استكشفوا ذكرياتنا ومغامراتنا من خلال هذه المجموعات الفوتوغرافية الساحرة.</p>
     </div>
   </section>
+  
 
-  <!-- Albums Section -->
   <div class="container mb-5">
+    <div class="filter-buttons text-center mb-4" data-aos="fade-up">
+      <button class="filter-button active" data-filter="all">All</button>
+      <% 
+        const uniqueCategories = [...new Set(albums.map(album => album.category))];
+        uniqueCategories.forEach(category => {
+      %>
+        <button class="filter-button" data-filter="<%= category %>"><%= category %></button>
+      <% }); %>
+    </div>
+
     <div class="row g-4">
       <% if (albums && albums.length > 0) { %>
         <% albums.forEach((album, index) => { %>
-          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+          <div class="col-md-6 col-lg-4 album-item" data-category="<%= album.category %>" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
             <div class="card h-100 shadow-sm">
               <div class="card-body">
-                <h5 class="album-title mb-3"><%= album.title %></h5>
+                <span class="album-category"><%= album.category %></span>
+                <br>
+                <h5 class="album-title"><%= album.title %></h5>
                 <p class="album-description"><%= album.description %></p>
               </div>
               <% if (album.images && album.images.length > 0) { %>
@@ -145,7 +243,7 @@
                 <img src="/default-album-image.jpg" class="card-img-top" alt="Default album image">
               <% } %>
               <div class="card-footer text-end">
-                <a href="/albums/<%= album.id %>" class="btn btn-primary btn-sm">View Album <i class="fas fa-arrow-right ms-2"></i></a>
+                <a href="/albums/<%= album.id %>" class="btn btn-primary">View Album <i class="fas fa-arrow-right ms-2"></i></a>
               </div>
             </div>
           </div>
@@ -166,6 +264,27 @@
         duration: 800,
         once: true,
         offset: 100
+      });
+
+      // Filter functionality
+      const filterButtons = document.querySelectorAll('.filter-button');
+      const albumItems = document.querySelectorAll('.album-item');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const filter = button.getAttribute('data-filter');
+          
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+
+          albumItems.forEach(item => {
+            if (filter === 'all' || item.getAttribute('data-category') === filter) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
       });
     });
   </script>

@@ -341,12 +341,12 @@ const upload = multer({ storage });
 
 
 app.post('/albums/add', upload.array('images', 10), (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, category } = req.body;
 
 
   db.run(
-    'INSERT INTO albums (title, description) VALUES (?, ?)',
-    [title, description],
+    'INSERT INTO albums (title, description, category) VALUES (?, ?, ?)',
+    [title, description, category],
     function (err) {
       if (err) {
         console.error('Error saving album:', err.message);
