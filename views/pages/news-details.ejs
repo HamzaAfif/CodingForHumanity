@@ -1,39 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= article.title %></title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="icon" href="assets/icon.ico" type="image/x-icon">
+  <title>صفحة المقالات | جمعية الملاك الصغير للكشفية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="/assets/icon.ico" type="image/x-icon">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#003366',
+            secondary: '#f7f9fc',
+            accent: '#FF5733',
+            navbarBackground: '#002147',
+            navbarText: '#fff',
+          },
+          fontFamily: {
+            sans: ['Tajawal', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #f9f9f9; 
-      padding-top: 80px; 
+      background-color: var(--secondary-color);
+      font-family: 'Tajawal', Arial, sans-serif;
     }
-
-    .container {
-      max-width: 800px;
-      background: #ffffff; 
+    main {
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
-      margin-bottom: 30px;
+      margin-top: 20px; /* Add margin to prevent overlap with navbar */
     }
-
+    .content-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
     h1 {
       font-size: 2rem;
-      font-weight: 600;
-      color: #333;
+      color: var(--primary-color);
       margin-bottom: 15px;
+      text-align: center;
     }
-
     .article-date {
       font-size: 0.9rem;
-      color: #6c757d; 
+      color: #6c757d;
       margin-bottom: 20px;
+      text-align: center;
     }
-
     .image-gallery {
       display: flex;
       flex-wrap: wrap;
@@ -41,76 +62,155 @@
       justify-content: center;
       margin-bottom: 20px;
     }
-
     .image-gallery img {
       max-width: 100%;
       height: auto;
       border-radius: 5px;
       box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     }
-
     p {
-      line-height: 1.6;
+      line-height: 1.8;
       color: #555;
       font-size: 1rem;
+      margin-bottom: 20px;
     }
-
     .btn-back {
       display: inline-block;
-      background-color: #007bff;
-      color: #fff;
+      background-color: var(--primary-color);
+      color: white;
       padding: 10px 20px;
       border-radius: 5px;
       text-decoration: none;
-      font-weight: 500;
       text-align: center;
+      transition: background-color 0.3s ease;
     }
-
     .btn-back:hover {
-      background-color: #0056b3;
+      background-color: var(--accent-color);
     }
-
     footer {
-      background-color: #f8f9fa;
+      background-color: var(--navbarBackground);
+      color: white;
       text-align: center;
       padding: 10px 0;
-      font-size: 0.9rem;
-      color: #6c757d;
-      border-top: 1px solid #e9ecef;
+      margin-top: 20px;
+    }
+    footer p {
+      margin: 0;
     }
   </style>
 </head>
-<body>
+<body class="bg-secondary font-sans">
 
-  <%- include('partials/navbar') %>
-
-  <div class="container">
-    <h1><%= article.title %></h1>
-    <p class="article-date">Published on <%= article.date %></p>
-
-
-    <% if (images.length > 0) { %>
-      <div class="image-gallery">
-        <% images.forEach(image => { %>
-          <img src="<%= image.image_path %>" alt="Image for <%= article.title %>">
-        <% }); %>
+  <!-- Include Navbar -->
+  <header class="bg-gray-100 py-2">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <div class="text-sm text-gray-600">
+        <a href="#" class="ml-4 hover:text-primary"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
+        <a href="#" class="hover:text-primary"><i class="fas fa-envelope"></i> contact@assppa.com</a>
       </div>
-    <% } else { %>
-      <p class="text-muted text-center">No images available for this article.</p>
-    <% } %>
-
-    <p><%= article.full_text %></p>
-
-   
-    <div class="text-center mt-4">
-      <a href="/" class="btn-back">Back to Home</a>
+      <div class="text-sm text-gray-600">
+        <a href="#" class="ml-2 hover:text-primary"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="ml-2 hover:text-primary"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="hover:text-primary"><i class="fab fa-instagram"></i></a>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <footer>
-    <p>&copy; 2024 Your Website Name. All rights reserved.</p>
+
+  <nav class="bg-navbarBackground text-navbarText">
+    <div class="container mx-auto flex justify-between items-center px-4 py-2">
+   
+      <a href="/" class="text-xl font-bold ml-auto"> 
+        جمعية الملاك الصغير للكشفية 
+      </a>
+    
+      <button class="block md:hidden text-navbarText" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="hidden md:flex space-x-4 rtl:space-x-reverse" id="menu">
+        <li><a href="/albums" class="hover:text-accent">البومات</a></li>
+        <li><a href="/know-us" class="hover:text-accent">عن الجمعية</a></li>
+        <li><a href="/curricula" class="hover:text-accent">المناهج</a></li>
+        <li><a href="/registration" class="hover:text-accent">نموذج الانتساب</a></li>
+        <li><a href="#contact" class="hover:text-accent">اتصل بنا</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="content-container bg-white shadow-md rounded-lg p-6">
+
+      <h1 class="text-3xl font-bold text-blue-900 mb-4 text-center"><%= article.title %></h1>
+
+      <p class="article-date text-sm text-gray-500 mb-6 text-center">نشر بتاريخ <%= article.date %></p>
+
+      <% if (images.length > 0) { %>
+        <div class="image-gallery grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <% images.forEach(image => { %>
+            <div class="rounded-lg overflow-hidden shadow-sm group relative">
+              <img src="<%= image.image_path %>" alt="صورة لـ <%= article.title %>" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out">
+              <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <p class="text-muted text-center text-gray-600 italic mb-6">لا توجد صور متوفرة لهذا المقال.</p>
+      <% } %>
+
+      <p class="leading-relaxed text-gray-700 text-lg mb-6">
+        <%= article.full_text %>
+      </p>
+      
+    </div>
+  </main>
+  
+  
+
+  <footer class="bg-gray-800 text-white text-center py-6" id="contact">
+    <div class="container mx-auto">
+      <p class="mb-4 text-white">&copy; 2024 جمعية الملاك الصغير للكشفية. جميع الحقوق محفوظة</p>
+  
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div>
+          <p class="text-white mb-2 font-semibold">العنوان:</p>
+          <p class="text-white">123 شارع الرئيس، المدينة، الدولة</p>
+        </div>
+        <div>
+          <p class="text-white mb-2 font-semibold">الهاتف:</p>
+          <p><a href="tel:+1234567890" class="text-white hover:text-accent">+123 456 7890</a></p>
+        </div>
+        <div>
+          <p class="text-white mb-2 font-semibold">البريد الإلكتروني:</p>
+          <p><a href="mailto:info@ourassociation.com" class="text-white hover:text-accent">info@ourassociation.com</a></p>
+        </div>
+      </div>
+  
+      <div class="mt-6">
+        <a href="#" class="text-white hover:text-accent me-3"><i class="fab fa-facebook fa-lg"></i></a>
+        <a href="#" class="text-white hover:text-accent me-3"><i class="fab fa-twitter fa-lg"></i></a>
+        <a href="#" class="text-white hover:text-accent me-3"><i class="fab fa-instagram fa-lg"></i></a>
+      </div>
+  
+      <div class="mt-6 flex justify-center gap-6">
+        <div>
+          <img src="/assets/clublogo.png" alt="School/Club Logo" class="h-12">
+        </div>
+        <div>
+          <img src="/assets/logowb.png" alt="Association Logo" class="h-12">
+        </div>
+      </div>
+    </div>
   </footer>
+  
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+
+    menuToggle.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  </script>
 </body>
 </html>
